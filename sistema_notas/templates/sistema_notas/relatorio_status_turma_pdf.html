@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Relatório de Status - {{ turma.nome }}</title>
+    <style>
+        @page {
+            size: A4 landscape; /* Define a orientação como horizontal */
+            margin: 10mm;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            text-align: center;
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        .legenda {
+            margin: 10px 0;
+            text-align: center;
+            font-size: 14px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            padding: 5px; /* Reduzido para diminuir a altura das linhas */
+            border: 1px solid #000; /* Preto, sem cores */
+        }
+        th {
+            font-weight: bold;
+            text-transform: uppercase;
+            text-align: center;
+        }
+        th.vertical {
+            width: 50px; /* Largura fixa para disciplinas */
+            height: 150px; /* Altura suficiente para acomodar o texto rotacionado */
+            text-align: center; /* Centraliza o texto */
+            vertical-align: center; /* Alinha na parte inferior da célula */
+            padding: 5px;
+        }
+        th.vertical div {
+            writing-mode: vertical-rl; /* Alinha o texto verticalmente (de baixo para cima) */
+            transform: rotate(-90deg); /* Garante leitura natural */
+            white-space: pre-wrap; /* Evita quebra de linha */
+            display: inline-block;
+        }
+        td.recuperacao {
+            font-weight: bold; /* Apenas "Recuperação" em negrito */
+        }
+        td.estudante-coluna {
+            text-align: left; /* Alinha os nomes dos estudantes à esquerda */
+            
+        }
+    </style>
+</head>
+<body>
+    <h1>RESULTADO FINAL - {{ turma.nome }}</h1>
+    <div class="legenda">
+        <strong>Legenda:</strong> <strong>AP</strong> - Aprovado &nbsp;&nbsp;&nbsp; <strong>RC</strong> - Recuperação &nbsp;&nbsp;&nbsp;<strong> DS</strong> - Desistente
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th class="estudante-coluna">Estudante</th>
+                {% for disciplina in disciplinas %}
+                <th class="vertical">
+                    <div>{{ disciplina.nome }}</div>
+                </th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for linha in tabela %}
+            <tr>
+                <td class="estudante-coluna">{{ linha.estudante }}</td>
+                {% for status in linha.status_disciplinas %}
+                <td class="{% if status.status == 'Recuperação' %}recuperacao{% endif %}">
+                    {% if status.status == 'Aprovado' %}
+                        AP
+                    {% elif status.status == 'Recuperação' %}
+                        RC
+                    {% elif status.status == 'Desistente' %}
+                        DS
+                    {% else %}
+                        --
+                    {% endif %}
+                </td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

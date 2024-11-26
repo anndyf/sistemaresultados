@@ -1,0 +1,11 @@
+{% extends "admin/base.html" %}
+
+{% block title %}{{ title }} | {{ site_title|default:_('Site admin') }}{% endblock %}
+
+{% block branding %}
+<h1 id="site-name">
+    <a href="{% url 'admin:index' %}">EduClass - CETEP/LNAB</a>
+</h1>
+{% endblock %}
+
+{% block nav-global %}{{ nav_global }}{% endblock %}

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Status da Turma {{ turma.nome }}</title>
+</head>
+<body>
+    <h1>Status da Turma: {{ turma.nome }}</h1>
+    <ul>
+        {% for estudante in estudantes %}
+            <li>{{ estudante.nome }}: {{ estudante.notas.all.0.status }} - {{ estudante.notas.all.0.nota }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

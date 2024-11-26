@@ -1,0 +1,53 @@
+{% extends "admin/base_site.html" %}
+{% block content %}
+<h1 style="text-align: center;">Resultado Final - Turma {{ turma.nome }}</h1>
+
+<p style="text-align: center;">Este relatório apresenta o status dos estudantes em todas as disciplinas da turma <strong>{{ turma.nome }}</strong>.</p>
+
+<table style="width: 100%; border-collapse: collapse; margin: 20px auto; text-align: center; border: 1px solid #ddd;">
+    <thead>
+        <tr style="background-color: #f2f2f2;">
+            <th style="border: 1px solid #ddd; padding: 8px;">#</th>
+            <th style="border: 1px solid #ddd; padding: 8px;">Estudante</th>
+            {% for disciplina in disciplinas %}
+            <th style="border: 1px solid #ddd; padding: 8px;">{{ disciplina.nome }}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for linha in tabela %}
+        <tr>
+            <td style="border: 1px solid #ddd; padding: 8px;">{{ forloop.counter }}</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">{{ linha.estudante }}</td>
+            {% for status_disciplinas in linha.status_disciplinas %}
+            <td style="border: 1px solid #ddd; padding: 8px; color: 
+                {% if status_disciplinas.status == 'Aprovado' %}
+                    green
+                {% elif status_disciplinas.status == 'Recuperação' %}
+                    orange
+                {% elif status_disciplinas.status == 'Desistente' %}
+                    red
+                {% else %}
+                    black
+                {% endif %};">
+                {{ status_disciplinas.status }}
+            </td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<a href="{% url 'gerar_pdf_relatorio_turma' turma.id %}" style="
+    display: inline-block;
+    padding: 10px 20px;
+    background: #007bff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 14px;
+    margin-top: 20px;
+">
+    Exportar como PDF
+</a>
+<a href="{% url 'admin:index' %}" style="display: block; text-align: center; margin-top: 20px;">Voltar para o painel administrativo</a>
+{% endblock %}
